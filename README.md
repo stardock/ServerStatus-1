@@ -3,6 +3,22 @@
 * ServerStatus中文版是一个酷炫高逼格的云探针、云监控、服务器云监控、多服务器探针~。
 * 在线演示：https://tz.cloudcpp.com    
 
+# 如何修正为只统计当月流量  
+将client文件做如下修改  
+```  
+def liuliang():
+	NET_IN = 0
+	NET_OUT = 0
+	vnstat=os.popen('vnstat --dumpdb').readlines()
+	for line in vnstat:
+		if line[0:4] == "m;0;":
+			mdata=line.split(";")
+			NET_IN=int(mdata[3])*1024*1024
+			NET_OUT=int(mdata[4])*1024*1024
+			break
+	return NET_IN, NET_OUT
+```  
+
 # 目录介绍：
 
 * autodeploy    自动部署.
